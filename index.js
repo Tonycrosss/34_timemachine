@@ -1,7 +1,9 @@
 var TIMEOUT_IN_SECS = 15;
 var TEMPLATE = '<h1><span class="js-timer-minutes">00</span>:<span class="js-timer-seconds">00</span></h1>';
-var ALERT_TIMEOUT_IN_SECS = 10
-var MOTIVATIONS = []
+var ALERT_TIMEOUT = 10
+var MOTIVATIONS = ["Делай сегодня то, что другие не хотят, завтра будешь жить так, как другие не могут.",
+            "Я не терпел поражений. Я просто нашёл 10 000 способов, которые не работают. © Томас Эдисон",
+            "Раз в жизни фортуна стучится в дверь каждого человека, но человек в это время нередко сидит в ближайшей пивной и никакого стука не слышит. © Марк Твен"];
 
 function padZero(number){
   return ("00" + String(number)).slice(-2);
@@ -86,8 +88,15 @@ class TimerWidget{
   }
 }
 
-function alertMotivation() {
+function randomIntFromInterval(min,max)
+{
+  return Math.floor(Math.random()*(max-min)+min);
+}
 
+
+function alertMotivation() {
+  var randomMotivation = MOTIVATIONS[randomIntFromInterval(0, MOTIVATIONS.length)]
+  alert(randomMotivation)
 }
 
 
@@ -104,7 +113,7 @@ function main(){
     timerWiget.update(secsLeft)
     if (secsLeft <= 0) {
       alertMotivation();
-      timer.setSecsLeft(ALERT_TIMEOUT_IN_SECS)
+      timer.setSecsLeft(ALERT_TIMEOUT)
     }
   }
 
