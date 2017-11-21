@@ -1,5 +1,5 @@
 var TIMEOUT_IN_SECS = 3 * 60;
-var TEMPLATE = '<h1><span class="js-timer-minutes">00</span>:<span class="js-timer-seconds">00</span></h1>';
+var TEMPLATE = '<h1 style="margin: auto"><span class="js-timer-minutes">00</span>:<span class="js-timer-seconds">00</span></h1>';
 var ALERT_TIMEOUT = 30;
 var MOTIVATIONS = ["Делай сегодня то, что другие не хотят, завтра будешь жить так, как другие не могут.",
   "Я не терпел поражений. Я просто нашёл 10 000 способов, которые не работают. © Томас Эдисон",
@@ -72,7 +72,7 @@ class TimerWidget {
     // adds HTML tag to current page
     this.timerContainer = document.createElement('div');
 
-    this.timerContainer.setAttribute("style", "height: 200px;");
+    this.timerContainer.setAttribute("style", "height: auto; width: auto; position: fixed; z-index: 1; top: 10px; padding: 1em; background-color: gray");
     this.timerContainer.innerHTML = TEMPLATE;
 
     rootTag.insertBefore(this.timerContainer, rootTag.firstChild);
