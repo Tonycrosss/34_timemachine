@@ -1,5 +1,7 @@
-var TIMEOUT_IN_SECS = 3 * 60;
+var TIMEOUT_IN_SECS = 15;
 var TEMPLATE = '<h1><span class="js-timer-minutes">00</span>:<span class="js-timer-seconds">00</span></h1>';
+var ALERT_TIMEOUT_IN_SECS = 10
+var MOTIVATIONS = []
 
 function padZero(number){
   return ("00" + String(number)).slice(-2);
@@ -11,6 +13,11 @@ class Timer{
   constructor(timeout_in_secs){
     this.initial_timeout_in_secs = timeout_in_secs;
     this.reset()
+  }
+  setSecsLeft(timeout_in_secs){
+    this.initial_timeout_in_secs = timeout_in_secs
+    this.timeout_in_secs = this.initial_timeout_in_secs
+    this.timestampOnStart = this.getTimestampInSecs()
   }
   getTimestampInSecs(){
     var timestampInMilliseconds = new Date().getTime();
@@ -51,12 +58,12 @@ class TimerWidget{
   }
   mount(rootTag){
     if (this.timerContainer)
-      this.unmount()
+      this.unmount();
 
     // adds HTML tag to current page
     this.timerContainer = document.createElement('div');
 
-    this.timerContainer.setAttribute("style", "height: 100px;");
+    this.timerContainer.setAttribute("style", "height: 200px;");
     this.timerContainer.innerHTML = TEMPLATE;
 
     rootTag.insertBefore(this.timerContainer, rootTag.firstChild);
@@ -79,6 +86,10 @@ class TimerWidget{
   }
 }
 
+function alertMotivation() {
+
+}
+
 
 function main(){
 
@@ -91,6 +102,10 @@ function main(){
   function handleIntervalTick(){
     var secsLeft = timer.calculateSecsLeft()
     timerWiget.update(secsLeft)
+    if (secsLeft <= 0) {
+      alertMotivation();
+      timer.setSecsLeft(ALERT_TIMEOUT_IN_SECS)
+    }
   }
 
   function handleVisibilityChange(){
@@ -103,11 +118,10 @@ function main(){
       intervalId = intervalId || setInterval(handleIntervalTick, 300)
     }
   }
-
   // https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
   document.addEventListener("visibilitychange", handleVisibilityChange, false);
   handleVisibilityChange()
 }
 
 // initialize timer when page ready for presentation
-window.addEventListener('load', main)
+window.addEventListener('load', main);
